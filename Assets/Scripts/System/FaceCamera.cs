@@ -1,10 +1,10 @@
 using UnityEngine;
 
-public class FaceCamera : MonoBehaviour
-{
-    void LateUpdate()
-    {
-        if (Camera.main != null)
-            transform.rotation = Quaternion.Euler(90, 0, 0);
-    }
+public class FaceCamera : MonoBehaviour 
+{ 
+    void LateUpdate() 
+    { 
+        if (Camera.main != null) 
+            transform.rotation = Quaternion.Euler(45, 0, 0); 
+    } 
 }
