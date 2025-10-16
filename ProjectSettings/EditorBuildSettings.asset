@@ -8,4 +8,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Map1.unity
     guid: 9fc0d4010bbf28b4594072e72b8655ab
+  - enabled: 1
+    path: Assets/Scenes/TeaBrewMiniGame.unity
+    guid: c32ade9b02da2274fa61f8d0d539c099
   m_configObjects: {}

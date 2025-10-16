@@ -18,17 +18,37 @@ public class DialogueManager : MonoBehaviour
     public AudioClip typingSound;
 
     private int currentIndex = 0;
+    private bool isTyping = false;
     private bool finishedTyping = false;
+
+    // --- new sound system ---
+    private AudioSource typingSource;
+    private float lastPlayTime = 0f;
+
+    // --- players ---
+    private PlayerMovement playerController;
 
     void Start()
     {
         dialogueUI.SetActive(false);
+
+        // Create reusable AudioSource for typing
+        typingSource = gameObject.AddComponent<AudioSource>();
+        typingSource.playOnAwake = false;
+        typingSource.spatialBlend = 0f; // 2D sound for UI
+
+        // find player controller
+        playerController = FindObjectOfType<PlayerMovement>();
     }
 
     public void StartDialogue()
     {
         currentIndex = 0;
         dialogueUI.SetActive(true);
+
+        if (playerController != null)
+            playerController.enabled = false; // disable movement
+
         ShowLine();
     }
 
@@ -48,12 +68,22 @@ public class DialogueManager : MonoBehaviour
         foreach (char c in line)
         {
             dialogueText.text += c;
-            if (typingSound) AudioSource.PlayClipAtPoint(typingSound, transform.position);
+
+            // Play controlled typing sound
+            if (typingSound && Time.time - lastPlayTime > 0.05f)
+            {
+                typingSource.pitch = Random.Range(0.95f, 1.05f);
+                typingSource.PlayOneShot(typingSound);
+                lastPlayTime = Time.time;
+            }
+
             yield return new WaitForSeconds(typingSpeed);
         }
+
         finishedTyping = true;
         ShowChoices();
     }
+
 
     void ShowChoices()
     {
@@ -61,7 +91,6 @@ public class DialogueManager : MonoBehaviour
 
         if (line.choices == null || line.choices.Length == 0)
         {
-            // no choices ¡ú press space to continue
             if (continueArrow) continueArrow.SetActive(true);
         }
         else
@@ -106,12 +135,6 @@ public class DialogueManager : MonoBehaviour
             Destroy(c.gameObject);
     }
 
-    //public void EndDialogue()
-    //{
-    //    dialogueUI.SetActive(false);
-    //    ClearChoices();
-    //}
-
     public void EndDialogue()
     {
         StartCoroutine(WaitThenClose());
@@ -123,15 +146,19 @@ public class DialogueManager : MonoBehaviour
             continueArrow.SetActive(true);
 
         ClearChoices();
-        // wait until player presses Space
+
+        // Wait until player presses Space to close
         yield return new WaitUntil(() => Input.GetKeyDown(KeyCode.Space));
 
         dialogueUI.SetActive(false);
 
         if (continueArrow != null)
             continueArrow.SetActive(false);
-    }
 
+        // re-enable player movement
+        if (playerController != null)
+            playerController.enabled = true;
+    }
 
     void Update()
     {

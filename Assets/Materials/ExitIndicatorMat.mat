@@ -7,7 +7,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: TalkIndicatorMat
+  m_Name: ExitIndicatorMat
   m_Shader: {fileID: 4800000, guid: 0d70b790c0571fe4d82370ce65282b05, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
@@ -24,7 +24,7 @@ Material:
     serializedVersion: 3
     m_TexEnvs:
     - _MainTex:
-        m_Texture: {fileID: 2800000, guid: 9220fb88bed05c34a9aa6aaaf6531c41, type: 3}
+        m_Texture: {fileID: 2800000, guid: 0ee0ac3c452482e44bf0f26208961577, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     m_Ints: []
