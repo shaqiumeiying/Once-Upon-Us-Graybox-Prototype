@@ -6,7 +6,7 @@ public class Collect : MonoBehaviour
 
     void Update()
     {
-        // If player is near a collectible and presses Space
+        // Press Space to collect when near a collectible
         if (currentCollectible != null && Input.GetKeyDown(KeyCode.Space))
         {
             CollectItem(currentCollectible);
@@ -18,43 +18,32 @@ public class Collect : MonoBehaviour
         if (other.CompareTag("Collectible"))
         {
             currentCollectible = other.gameObject;
-
-            // show indicator (if exists)
-            var indicator = other.transform.Find("InteractIndicator");
-            if (indicator != null)
-                indicator.gameObject.SetActive(true);
         }
     }
 
     void OnTriggerExit(Collider other)
     {
-        if (other.CompareTag("Collectible"))
+        if (other.CompareTag("Collectible") && currentCollectible == other.gameObject)
         {
-            // hide indicator (if exists)
-            var indicator = other.transform.Find("InteractIndicator");
-            if (indicator != null)
-                indicator.gameObject.SetActive(false);
-
-            // reset collectible reference
-            if (currentCollectible == other.gameObject)
-                currentCollectible = null;
+            currentCollectible = null;
         }
     }
 
     void CollectItem(GameObject collectible)
     {
-        Debug.Log("Picked up " + collectible.name);
-
         var item = collectible.GetComponent<CollectibleItem>();
         var feedback = GetComponent<PickupFeedback>();
 
-        if (feedback != null && item != null)
+        if (item != null)
         {
-            feedback.ShowPickup(item);
+            Debug.Log("Picked up " + item.itemName);
+
+            if (feedback != null)
+                feedback.ShowPickup(item);  // display pickup message, play sound, etc.
+
+            Destroy(collectible);
         }
 
-        Destroy(collectible);
         currentCollectible = null;
     }
-
 }
