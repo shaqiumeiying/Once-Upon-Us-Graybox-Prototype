@@ -10,7 +10,7 @@ public class DropTarget : MonoBehaviour
 
     public void OnItemDropped(string itemName)
     {
-        var game = TeaGameManager.Instance;
+        var game = TeaBrewManager.Instance;
         var inv = FindObjectOfType<InventoryManagerTBM>();
 
         // Check if the dropped item is valid for this target
@@ -34,8 +34,8 @@ public class DropTarget : MonoBehaviour
                 if (game.mortarHasLeaves)
                 {
                     Debug.Log("Mortar placed on stove ¡ª baking in progress...");
-                    // TODO: trigger QTE 
                     game.mortarHasLeaves = false;
+                    // TODO: trigger QTE minigame
                     inv.AddItem("BakedLeaves", 1);
                     Debug.Log("Baked Leaves added to inventory!");
                 }
@@ -72,9 +72,10 @@ public class DropTarget : MonoBehaviour
             case "Cup":
                 if (game.teapotBoiled)
                 {
+                    // TODO: trigger final minigame
                     Debug.Log("Tea poured into cup! Tea brewed successfully.");
                     game.cupHasTea = true;
-                    // TODO: trigger final minigame
+                    
                 }
                 break;
 

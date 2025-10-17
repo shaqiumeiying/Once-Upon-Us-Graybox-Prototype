@@ -52,7 +52,7 @@ public class InventoryItemTBM : MonoBehaviour, IBeginDragHandler, IDragHandler, 
             {
                 // Found a DropTarget in the world!
                 target.OnItemDropped(itemName);
-                Debug.Log($"Dropped {itemName} on {target.gameObject.name}");
+                // Debug.Log($"Dropped {itemName} on {target.gameObject.name}");
             }
             else
             {
@@ -61,7 +61,7 @@ public class InventoryItemTBM : MonoBehaviour, IBeginDragHandler, IDragHandler, 
         }
         else
         {
-            Debug.Log("Nothing hit by raycast.");
+            // Debug.Log("Nothing hit by raycast.");
         }
     }
 }

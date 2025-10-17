@@ -6,17 +6,23 @@ public class InventoryManagerTBM : MonoBehaviour
     [Header("Item Counts")]
     public int teaLeavesCount = 5;
     public int waterCount = 3;
+    public int bakedLeavesCount = 0;
 
     [Header("UI References")]
     public TextMeshProUGUI teaLeavesText;
     public TextMeshProUGUI waterText;
+    public TextMeshProUGUI bakedLeavesText;
 
     [Header("Item Objects")]
     public GameObject teaLeavesItem;  
-    public GameObject waterItem; 
+    public GameObject waterItem;
+    public GameObject bakedLeavesItem;
 
     void Start()
     {
+        if (bakedLeavesItem != null)
+            bakedLeavesItem.SetActive(bakedLeavesCount > 0);
+
         UpdateUI();
     }
 
@@ -40,6 +46,15 @@ public class InventoryManagerTBM : MonoBehaviour
                 if (waterItem != null) Destroy(waterItem);
             }
         }
+        else if (itemName == "BakedLeaves")
+        {
+            bakedLeavesCount -= amount;
+            if (bakedLeavesCount <= 0)
+            {
+                bakedLeavesCount = 0;
+                if (bakedLeavesItem != null) Destroy(bakedLeavesItem);
+            }
+        }
 
         UpdateUI();
     }
@@ -48,8 +63,11 @@ public class InventoryManagerTBM : MonoBehaviour
     {
         if (itemName == "BakedLeaves")
         {
-            teaLeavesCount += amount; // or add a separate bakedLeavesCount if you prefer
+            bakedLeavesCount += amount;
             UpdateUI();
+
+            if (bakedLeavesItem != null)
+                bakedLeavesItem.SetActive(true);
         }
     }
 
@@ -60,5 +78,9 @@ public class InventoryManagerTBM : MonoBehaviour
 
         if (waterText != null)
             waterText.text = $"x{waterCount}";
+
+        if (bakedLeavesText != null)
+            bakedLeavesText.text = $"x{bakedLeavesCount}";
     }
+
 }
