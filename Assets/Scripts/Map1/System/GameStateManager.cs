@@ -1,36 +1,112 @@
-using System.Collections.Generic;
-using UnityEngine;
+//using UnityEngine;
+//using System.Collections.Generic;
+//using System.IO;
 
-public class GameStateManager : MonoBehaviour
-{
-    public static GameStateManager Instance;
+//public class GameStateManager : MonoBehaviour
+//{
+//    public static GameStateManager Instance;
 
-    // Store player decisions as key/value pairs
-    private Dictionary<string, string> decisions = new Dictionary<string, string>();
+//    private Dictionary<string, string> decisions = new Dictionary<string, string>();
+//    private string savePath;
 
-    void Awake()
-    {
-        if (Instance == null)
-        {
-            Instance = this;
-            DontDestroyOnLoad(gameObject); // stays between scenes
-        }
-        else
-        {
-            Destroy(gameObject);
-        }
-    }
+//    void Awake()
+//    {
+//        if (Instance == null)
+//        {
+//            Instance = this;
+//            DontDestroyOnLoad(gameObject);
+//            savePath = Application.persistentDataPath + "/gamestate.json";
+//            LoadFromDisk();
+//        }
+//        else
+//        {
+//            Destroy(gameObject);
+//        }
+//    }
 
-    public void SaveDecision(string npcName, string choice)
-    {
-        decisions[npcName] = choice;
-        Debug.Log($"Saved choice for {npcName}: {choice}");
-    }
+//    public void SaveDecision(string npcName, string choice)
+//    {
+//        decisions[npcName] = choice;
+//        SaveToDisk();
+//    }
 
-    public string GetDecision(string npcName)
-    {
-        if (decisions.ContainsKey(npcName))
-            return decisions[npcName];
-        return null;
-    }
+//    public string GetDecision(string npcName)
+//    {
+//        if (decisions.TryGetValue(npcName, out string val))
+//            return val;
+//        return null;
+//    }
+
+//    void SaveToDisk()
+//    {
+//        string json = JsonUtility.ToJson(new SaveWrapper(decisions));
+//        File.WriteAllText(savePath, json);
+//    }
+
+//    void LoadFromDisk()
+//    {
+//        if (File.Exists(savePath))
+//        {
+//            string json = File.ReadAllText(savePath);
+//            decisions = JsonUtility.FromJson<SaveWrapper>(json).decisions;
+//        }
+//    }
+
+//    [System.Serializable]
+//    class SaveWrapper
+//    {
+//        public Dictionary<string, string> decisions;
+//        public SaveWrapper(Dictionary<string, string> d) { decisions = d; }
+//    }
+//}
+
+using System.Collections.Generic; 
+using UnityEngine; 
+public class GameStateManager : MonoBehaviour { 
+    public static GameStateManager Instance; 
+    // store general decisions: e.g. "TeaWitch" ¡ú "CompletedMainDialogue"
+    private Dictionary<string, string> decisions = new Dictionary<string, string>(); 
+    // optional numeric stage tracker: e.g. "TeaWitch"
+    private Dictionary<string, int> npcStages = new Dictionary<string, int>(); 
+    void Awake() { 
+        // Singleton pattern ¡ª only one instance across all scenes
+        if (Instance == null) { 
+            Instance = this; 
+            DontDestroyOnLoad(gameObject); 
+        } 
+        else 
+        { Destroy(gameObject); 
+        } 
+    } 
+    // =============== STRING-BASED DECISIONS =============== 
+    /// Save a string decision
+    public void SaveDecision(string npcName, string choice) { 
+        decisions[npcName] = choice; 
+        Debug.Log($"[GameState] Saved choice for {npcName}: {choice}"); 
+    } /// Get a previously saved decision (returns null if none found) 
+    public string GetDecision(string npcName) { 
+        if (decisions.TryGetValue(npcName, out string value)) 
+            return value; 
+        return null; 
+    } 
+
+    public void SaveStage(string npcName, int stage) 
+    { npcStages[npcName] = stage; 
+        Debug.Log($"[GameState] Saved stage for {npcName}: {stage}"); 
+    } 
+    /// Get the saved numeric stage (returns 0 if not found)
+
+    public int GetStage(string npcName) 
+    { if (npcStages.TryGetValue(npcName, out int stage)) return stage; return 0; 
+    } 
+
+    // =============== UTILITY HELPERS =============== // Checks if a decision exists for the given NPC.
+
+    public bool HasDecision(string npcName) { 
+        return decisions.ContainsKey(npcName); 
+    } /// Resets all stored states ¡ª useful for testing. 
+    public void ClearAll() { 
+        decisions.Clear(); npcStages.Clear(); 
+        Debug.Log("[GameState] All saved data cleared."); 
+    } 
 }

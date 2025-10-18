@@ -132,7 +132,6 @@ GameObject:
   - component: {fileID: 852317859316417996}
   - component: {fileID: 3094748442930159101}
   - component: {fileID: 4692912155382929392}
-  - component: {fileID: 284291859828740102}
   - component: {fileID: 8093049301494958424}
   - component: {fileID: 7942918744935458786}
   m_Layer: 0
@@ -250,27 +249,6 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &284291859828740102
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8218617879368080047}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2bf2363e7dc615444bb40e924b58415b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  dialogueNodes: []
-  dialogueUI: {fileID: 0}
-  dialogueText: {fileID: 0}
-  typingSpeed: 0.03
-  typingSound: {fileID: 0}
-  choicesContainer: {fileID: 0}
-  choiceButtonPrefab: {fileID: 0}
-  talkIndicator: {fileID: 3297345778489869354}
-  continueArrow: {fileID: 0}
 --- !u!114 &8093049301494958424
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -304,6 +282,9 @@ MonoBehaviour:
   dialogueText: {fileID: 0}
   choicesContainer: {fileID: 0}
   choiceButtonPrefab: {fileID: 0}
+  npcName: 
+  firstMeetingLines: []
+  repeatLines: []
   typingSpeed: 0.03
   continueArrow: {fileID: 0}
-  typingSound: {fileID: 8300000, guid: 00004fb294fd84e4ab5e1fcab3aa875c, type: 3}
+  typingSound: {fileID: 8300000, guid: 30685a55f40be684eacc1039a2f7b286, type: 3}
