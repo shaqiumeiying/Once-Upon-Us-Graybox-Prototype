@@ -4708,7 +4708,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   timingBar: {fileID: 1684821491}
   marker: {fileID: 854281105}
-  movementSpeed: 15
+  targetArea: {fileID: 416812225}
+  movementSpeed: 20
   pauseDuration: 2
 --- !u!114 &2146015245
 MonoBehaviour:

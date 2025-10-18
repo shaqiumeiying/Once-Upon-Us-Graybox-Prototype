@@ -11,6 +11,7 @@ public class PouringMinigameManager : MonoBehaviour
     [Header("References")]
     [SerializeField] private Transform timingBar;
     [SerializeField] private Transform marker;
+    [SerializeField] private Transform targetArea;
 
     // === Movement Settings ===
     [Header("Movement Settings")]
@@ -29,6 +30,11 @@ public class PouringMinigameManager : MonoBehaviour
     void Start()
     {
         InitializeTimingBar();
+    }
+
+    void OnEnable()
+    {
+        ResetMinigame();
     }
 
     /// <summary>
@@ -81,6 +87,32 @@ public class PouringMinigameManager : MonoBehaviour
         minX = barCenterX - (barWidth / 2) + (markerWidth / 2);
         maxX = barCenterX + (barWidth / 2) - (markerWidth / 2);
     }
+
+    /// <summary>
+    /// Randomize the target area position within the timing bar bounds.
+    /// </summary>
+    private void RandomizeTargetPosition()
+    {
+        if (targetArea == null) return;
+
+        Renderer targetRenderer = targetArea.GetComponent<Renderer>();
+        if (targetRenderer == null) return;
+
+        float targetWidth = targetRenderer.bounds.size.x;
+
+        // Calculate valid range for target center (so it stays fully within the bar)
+        float targetMinX = minX + (targetWidth / 2);
+        float targetMaxX = maxX - (targetWidth / 2);
+
+        // Pick a random X position within the valid range
+        float randomX = Random.Range(targetMinX, targetMaxX);
+
+        // Set the target area's position
+        Vector3 targetPos = targetArea.position;
+        targetPos.x = randomX;
+        targetArea.position = targetPos;
+    }
+
 
     /// <summary>
     /// Position the marker at the starting (left) position.
@@ -162,6 +194,24 @@ public class PouringMinigameManager : MonoBehaviour
             pos.x = minX;
             movingRight = true;
         }
+    }
+
+    /// <summary>
+    /// Resets Movement and location to initial state.
+    /// </summary>
+    public void ResetMinigame()
+    {
+        if (marker == null) return;
+
+        // Reset position
+        SetMarkerToStartPosition();
+
+        //Randomize target area position
+        RandomizeTargetPosition();
+
+        // Reset movement state
+        movingRight = true;
+        isStopped = false;
     }
 
     // === Public Control Methods ===
