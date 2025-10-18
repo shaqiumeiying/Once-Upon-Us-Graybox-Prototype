@@ -2269,8 +2269,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe223101c5ebbcc4f9c4109c0099ecc1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeed: 5
-  rb: {fileID: 0}
 --- !u!1 &889456934
 GameObject:
   m_ObjectHideFlags: 0
@@ -4091,6 +4089,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: db1ae2570ed9c134bb22b3cb0bbd63a3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  pouringMinigameObject: {fileID: 2146015242}
 --- !u!1 &1767901019
 GameObject:
   m_ObjectHideFlags: 0
@@ -4669,13 +4668,14 @@ GameObject:
   m_Component:
   - component: {fileID: 2146015243}
   - component: {fileID: 2146015244}
+  - component: {fileID: 2146015245}
   m_Layer: 0
   m_Name: PouringMinigame
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &2146015243
 Transform:
   m_ObjectHideFlags: 0
@@ -4708,8 +4708,25 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   timingBar: {fileID: 1684821491}
   marker: {fileID: 854281105}
-  movementSpeed: 4
-  pauseDuration: 0
+  movementSpeed: 15
+  pauseDuration: 2
+--- !u!114 &2146015245
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2146015242}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0fa72e91544f2df49a60d5a3488551a6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  marker: {fileID: 854281105}
+  targetArea: {fileID: 416812225}
+  pouringManager: {fileID: 2146015244}
+  perfectMessage: Perfect pour!
+  failMessage: Careful! That's too much!
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

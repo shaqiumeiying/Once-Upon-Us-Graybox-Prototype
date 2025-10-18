@@ -2,125 +2,176 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// Manages the pouring minigame timing bar mechanics.
+/// </summary>
 public class PouringMinigameManager : MonoBehaviour
 {
+    // === References ===
     [Header("References")]
     [SerializeField] private Transform timingBar;
     [SerializeField] private Transform marker;
 
+    // === Movement Settings ===
     [Header("Movement Settings")]
-    [SerializeField] private float movementSpeed = 2f; // Units per second
-    [SerializeField] private float pauseDuration = 0.2f; // Pause at ends (optional)
+    [SerializeField] private float movementSpeed = 2f;
+    [SerializeField] private float pauseDuration = 0.5f;  // Delay before disabling after spacebar press
 
-    private float minX;
-    private float maxX;
-    private bool movingRight = true;
-    private float pauseTimer = 0f;
-    private bool isPaused = false;
+    // === Internal State ===
+    private float minX;                 // Left boundary for marker movement
+    private float maxX;                 // Right boundary for marker movement
+    private bool movingRight = true;    // Current direction of marker movement
+    private bool isStopped = false;     // Whether marker has been stopped by player input
 
+    /// <summary>
+    /// Initialize the timing bar bounds and position the marker at the start.
+    /// </summary>
     void Start()
     {
-        // Calculate the movement bounds based on the TimingBar bounds
-        if (timingBar != null && marker != null)
-        {
-            Renderer barRenderer = timingBar.GetComponent<Renderer>();
-            Renderer markerRenderer = marker.GetComponent<Renderer>();
-
-            if (barRenderer != null && markerRenderer != null)
-            {
-                // Get the world space bounds
-                float barWidth = barRenderer.bounds.size.x;
-                float markerWidth = markerRenderer.bounds.size.x;
-
-                // Calculate min and max X positions in world space
-                float barCenterX = timingBar.position.x;
-                minX = barCenterX - (barWidth / 2) + (markerWidth / 2);
-                maxX = barCenterX + (barWidth / 2) - (markerWidth / 2);
-
-                // Start at the left position
-                Vector3 pos = marker.position;
-                pos.x = minX;
-                marker.position = pos;
-            }
-        }
+        InitializeTimingBar();
     }
 
+    /// <summary>
+    /// Update marker position each frame, handling movement/direction changes and spacebar pressed
+    /// </summary>
     void Update()
+    {
+        // Safety check: exit if references are missing
+        if (timingBar == null || marker == null) return;
+
+        HandlePlayerInput();
+
+        // Exit if marker has been stopped by player
+        if (isStopped) return;
+
+        UpdateMarkerPosition();
+    }
+
+    // === Helper Methods ===
+
+    /// <summary>
+    /// Calculate movement bounds and set initial marker position.
+    /// </summary>
+    private void InitializeTimingBar()
     {
         if (timingBar == null || marker == null) return;
 
-        // Handle pause at ends
-        if (isPaused)
+        Renderer barRenderer = timingBar.GetComponent<Renderer>();
+        Renderer markerRenderer = marker.GetComponent<Renderer>();
+
+        if (barRenderer != null && markerRenderer != null)
         {
-            pauseTimer += Time.deltaTime;
-            if (pauseTimer >= pauseDuration)
-            {
-                isPaused = false;
-                pauseTimer = 0f;
-            }
-            return;
+            CalculateMovementBounds(barRenderer, markerRenderer);
+            SetMarkerToStartPosition();
+        }
+    }
+
+    /// <summary>
+    /// Calculate the min and max X boundaries for marker movement.
+    /// </summary>
+    private void CalculateMovementBounds(Renderer barRenderer, Renderer markerRenderer)
+    {
+        // Get the world space bounds of both objects
+        float barWidth = barRenderer.bounds.size.x;
+        float markerWidth = markerRenderer.bounds.size.x;
+
+        // Calculate min and max X positions in world space
+        // This keeps the marker within the visual bounds of the timing bar
+        float barCenterX = timingBar.position.x;
+        minX = barCenterX - (barWidth / 2) + (markerWidth / 2);
+        maxX = barCenterX + (barWidth / 2) - (markerWidth / 2);
+    }
+
+    /// <summary>
+    /// Position the marker at the starting (left) position.
+    /// </summary>
+    private void SetMarkerToStartPosition()
+    {
+        Vector3 pos = marker.position;
+        pos.x = minX;
+        marker.position = pos;
+    }
+
+    /// <summary>
+    /// Check for player input (spacebar) to stop the marker.
+    /// </summary>
+    private void HandlePlayerInput()
+    {
+        // Check for spacebar input to stop the marker
+        if (Input.GetKeyDown(KeyCode.Space) && !isStopped)
+        {
+            isStopped = true;
+            StartCoroutine(DisableAfterDelay());
         }
 
-        // Move the marker
+    }
+
+    /// <summary>
+    /// Enforces a timer to disable the minigame after a delay.
+    /// </summary>
+    private IEnumerator DisableAfterDelay()
+    {
+        yield return new WaitForSeconds(pauseDuration);
+        gameObject.SetActive(false);
+    }
+
+    /// <summary>
+    /// Update the marker's position and handle boundary detection.
+    /// </summary>
+    private void UpdateMarkerPosition()
+    {
         Vector3 pos = marker.position;
 
         if (movingRight)
         {
-            pos.x += movementSpeed * Time.deltaTime;
-
-            if (pos.x >= maxX)
-            {
-                pos.x = maxX;
-                movingRight = false;
-                isPaused = pauseDuration > 0;
-            }
+            MoveMarkerRight(ref pos);
         }
         else
         {
-            pos.x -= movementSpeed * Time.deltaTime;
-
-            if (pos.x <= minX)
-            {
-                pos.x = minX;
-                movingRight = true;
-                isPaused = pauseDuration > 0;
-            }
+            MoveMarkerLeft(ref pos);
         }
 
         marker.position = pos;
     }
 
-    // Public methods for controlling the marker
-    public void SetSpeed(float speed)
+    /// <summary>
+    /// Move the marker right and check for right boundary.
+    /// </summary>
+    private void MoveMarkerRight(ref Vector3 pos)
     {
-        movementSpeed = speed;
+        pos.x += movementSpeed * Time.deltaTime;
+
+        // Check if reached right boundary
+        if (pos.x >= maxX)
+        {
+            pos.x = maxX;
+            movingRight = false;
+        }
     }
 
-    public void ResetPosition()
+    /// <summary>
+    /// Move the marker left and check for left boundary.
+    /// </summary>
+    private void MoveMarkerLeft(ref Vector3 pos)
     {
-        if (marker != null)
+        pos.x -= movementSpeed * Time.deltaTime;
+
+        // Check if reached left boundary
+        if (pos.x <= minX)
         {
-            Vector3 pos = marker.position;
             pos.x = minX;
-            marker.position = pos;
             movingRight = true;
         }
     }
 
-    public void PauseMovement()
-    {
-        enabled = false;
-    }
+    // === Public Control Methods ===
 
-    public void ResumeMovement()
+    /// <summary>
+    /// Dynamically adjust the marker's movement speed.
+    /// </summary>
+    /// <param name="speed">New speed in units per second</param>
+    public void SetSpeed(float speed)
     {
-        enabled = true;
-    }
-
-    // Get the normalized position (0 to 1) of the marker
-    public float GetNormalizedPosition()
-    {
-        if (marker == null) return 0f;
-        return Mathf.InverseLerp(minX, maxX, marker.position.x);
+        movementSpeed = speed;
     }
 }

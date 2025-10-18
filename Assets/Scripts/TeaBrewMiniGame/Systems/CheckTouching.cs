@@ -21,10 +21,7 @@ public class CheckTouching : MonoBehaviour
 
         if (thisCollider.bounds.Intersects(otherCollider.bounds))
         {
-            Debug.Log(gameObject.name + " is touching " + otherObject.name);
-        } else
-        {
-            Debug.Log(gameObject.name + " not touching " + otherObject.name);
-        }
+            // Debug.Log(gameObject.name + " is touching " + otherObject.name);
+        } 
     }
 }

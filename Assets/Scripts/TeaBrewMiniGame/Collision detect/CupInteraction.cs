@@ -2,6 +2,9 @@ using UnityEngine;
 
 public class CupInteraction : MonoBehaviour
 {
+    [Header("References")]
+    [SerializeField] private GameObject pouringMinigameObject;  // Object containing PouringMinigameManager
+
     private TeaBrewManager game;
 
     void Start()
@@ -29,8 +32,8 @@ public class CupInteraction : MonoBehaviour
 
     private void PourTea()
     {
-
-        // TODO: Trigger Pouring MiniGame
+        // Set PouringMinigame Object to active to trigger minigame
+        pouringMinigameObject.SetActive(true);
         // now directly pour tea
         game.cupHasTea = true;
         Debug.Log("Tea poured successfully! Cup now has tea.");
