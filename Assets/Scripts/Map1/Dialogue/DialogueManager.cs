@@ -90,6 +90,9 @@ public class DialogueManager : MonoBehaviour
         finishedTyping = false;
         ClearChoices();
 
+        if (continueArrow)
+            continueArrow.SetActive(false); // Always hide at the start of a line
+
         if (currentIndex < 0 || currentIndex >= dialogueLines.Length)
         {
             EndDialogue();
@@ -100,6 +103,7 @@ public class DialogueManager : MonoBehaviour
         StartCoroutine(TypeLine(line.npcLine));
         StartCoroutine(WaitThenShowChoices());
     }
+
 
     IEnumerator WaitThenShowChoices()
     {
@@ -131,12 +135,16 @@ public class DialogueManager : MonoBehaviour
     {
         DialogueLine line = dialogueLines[currentIndex];
 
+        ClearChoices();
+
+        // Case: no choices ¡ú show arrow
         if (line.choices == null || line.choices.Length == 0)
         {
             if (continueArrow) continueArrow.SetActive(true);
             return;
         }
 
+        // Case: there are choices ¡ú hide arrow and show choice buttons
         if (continueArrow) continueArrow.SetActive(false);
 
         foreach (var choice in line.choices)
@@ -146,6 +154,7 @@ public class DialogueManager : MonoBehaviour
             b.onClick.AddListener(() => OnChoiceSelected(choice));
         }
     }
+
 
     void OnChoiceSelected(DialogueChoice choice)
     {
