@@ -25,7 +25,7 @@ public class DestroyAfterDialogue : MonoBehaviour
 
         yield return new WaitUntil(() => !dialogueManager.dialogueUI.activeSelf);
 
-        yield return new WaitForSeconds(0.5f);
+        yield return new WaitForSeconds(1f);
 
         if (!hasDestroyed)
         {
