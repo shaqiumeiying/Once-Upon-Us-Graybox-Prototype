@@ -8,23 +8,43 @@ public class PickupFeedback : MonoBehaviour
     public TextMeshProUGUI pickupText;
     public InventoryManager inventory;
 
+    [Header("Bookmark UI References")]
+    public GameObject sugarIconUI; 
+
     private Coroutine hideTextCoroutine;
 
-    // Called manually when player picks up an item
     public void ShowPickup(CollectibleItem item)
     {
-        if (inventory)
-            inventory.AddItem(item.icon);
+        Debug.Log($"Picked up item: {item.itemName}");
 
+        // Skip inventory for sugar
+        if (inventory && !item.itemName.Equals("Sugar(Artifact)", System.StringComparison.OrdinalIgnoreCase))
+        {
+            Debug.Log("Added to inventory.");
+            inventory.AddItem(item.icon);
+        }
+
+        // Sound
         if (pickupSound)
             AudioSource.PlayClipAtPoint(pickupSound, transform.position);
 
+        // Text feedback
         if (pickupText)
         {
             pickupText.text = "Picked up " + item.itemName + "!";
             if (hideTextCoroutine != null)
                 StopCoroutine(hideTextCoroutine);
             hideTextCoroutine = StartCoroutine(HideTextAfterDelay(2f));
+        }
+
+        // Try activating sugar icon
+        if (item.itemName.Equals("Sugar(Artifact)", System.StringComparison.OrdinalIgnoreCase))
+        {
+            if (sugarIconUI != null)
+            {
+                Debug.Log("Found sugarIconUI reference, activating it now.");
+                sugarIconUI.SetActive(true);
+            }
         }
     }
 

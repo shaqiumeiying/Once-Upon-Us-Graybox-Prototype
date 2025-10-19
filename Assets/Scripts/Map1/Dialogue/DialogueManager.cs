@@ -12,6 +12,10 @@ public class DialogueManager : MonoBehaviour
     public Transform choicesContainer;
     public Button choiceButtonPrefab;
 
+    [Header("Portraits")]
+    public Image characterPortrait;
+    public Sprite defaultPortrait;
+
     [Header("NPC State Info")]
     public string npcName;                   
     public DialogueLine[] firstMeetingLines;  // first time dialogue
@@ -48,10 +52,13 @@ public class DialogueManager : MonoBehaviour
     {
         currentIndex = 0;
         dialogueUI.SetActive(true);
-
+ 
         // Disable player control
         if (playerController != null)
             playerController.enabled = false;
+
+        if (characterPortrait != null && defaultPortrait != null)
+            characterPortrait.sprite = defaultPortrait;
 
         if (GameStateManager.Instance == null)
         {
