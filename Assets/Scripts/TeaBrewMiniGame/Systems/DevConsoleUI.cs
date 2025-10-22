@@ -6,7 +6,7 @@ public class DevConsoleUI : MonoBehaviour
 {
     [Header("UI References")]
     public TextMeshProUGUI logText;
-    [Range(5, 100)]
+    [Range(1, 15)]
     public int maxLines = 15;
 
     private readonly Queue<string> logQueue = new Queue<string>();
