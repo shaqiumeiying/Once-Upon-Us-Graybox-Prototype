@@ -11,6 +11,7 @@ public class DialogueManager : MonoBehaviour
     public TextMeshProUGUI dialogueText;
     public Transform choicesContainer;
     public Button choiceButtonPrefab;
+    public TextMeshProUGUI npcNameText;
 
     [Header("Portraits")]
     public Image characterPortrait;
@@ -79,6 +80,9 @@ public class DialogueManager : MonoBehaviour
             dialogueLines = firstMeetingLines;
             // Debug.Log($"[DialogueManager] {npcName} using FIRST meeting dialogue.");
         }
+
+        if (npcNameText != null)
+            npcNameText.text = npcName;
 
         ShowLine();
     }
