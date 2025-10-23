@@ -46,7 +46,7 @@ public class InventoryManagerTBM : MonoBehaviour
                 if (waterItem != null) Destroy(waterItem);
             }
         }
-        else if (itemName == "BakedLeaves")
+        else if (itemName == "BakedTeaLeaves")
         {
             bakedLeavesCount -= amount;
             if (bakedLeavesCount <= 0)

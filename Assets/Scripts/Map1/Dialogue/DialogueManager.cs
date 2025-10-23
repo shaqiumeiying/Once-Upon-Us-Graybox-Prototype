@@ -11,15 +11,16 @@ public class DialogueManager : MonoBehaviour
     public TextMeshProUGUI dialogueText;
     public Transform choicesContainer;
     public Button choiceButtonPrefab;
+    public TextMeshProUGUI npcNameText;
 
     [Header("Portraits")]
     public Image characterPortrait;
     public Sprite defaultPortrait;
 
     [Header("NPC State Info")]
-    public string npcName;                   
-    public DialogueLine[] firstMeetingLines;  // first time dialogue
-    public DialogueLine[] repeatLines;        // shorter repeat dialogue
+    public string npcName;
+    public DialogueLine[] firstMeetingLines;
+    public DialogueLine[] repeatLines;
 
     [Header("Visuals")]
     public float typingSpeed = 0.03f;
@@ -34,26 +35,26 @@ public class DialogueManager : MonoBehaviour
 
     private PlayerMovement playerController;
 
+    // --- new fields ---
+    private bool skipRequested = false;
+    private bool suppressSpaceThisFrame = false;
+
     void Start()
     {
         dialogueUI.SetActive(false);
 
-        // Create a reusable AudioSource for typing
         typingSource = gameObject.AddComponent<AudioSource>();
         typingSource.playOnAwake = false;
-        typingSource.spatialBlend = 0f; // 2D UI sound
+        typingSource.spatialBlend = 0f;
 
-        // Find player movement controller
         playerController = FindObjectOfType<PlayerMovement>();
     }
 
-    // Called externally when dialogue starts
     public void StartDialogue()
     {
         currentIndex = 0;
         dialogueUI.SetActive(true);
- 
-        // Disable player control
+
         if (playerController != null)
             playerController.enabled = false;
 
@@ -66,19 +67,17 @@ public class DialogueManager : MonoBehaviour
             new GameObject("GameStateManager").AddComponent<GameStateManager>();
         }
 
-        // --- Determine which dialogue to use ---
         string savedState = GameStateManager.Instance?.GetDecision(npcName);
-
         if (savedState == "CompletedMainDialogue")
-        {
             dialogueLines = repeatLines;
-            // Debug.Log($"[DialogueManager] {npcName} using REPEAT dialogue.");
-        }
         else
-        {
             dialogueLines = firstMeetingLines;
-            // Debug.Log($"[DialogueManager] {npcName} using FIRST meeting dialogue.");
-        }
+
+        if (npcNameText != null)
+            npcNameText.text = npcName;
+
+        suppressSpaceThisFrame = true;
+        StartCoroutine(EnableSpaceNextFrame());
 
         ShowLine();
     }
@@ -91,7 +90,7 @@ public class DialogueManager : MonoBehaviour
         ClearChoices();
 
         if (continueArrow)
-            continueArrow.SetActive(false); // Always hide at the start of a line
+            continueArrow.SetActive(false);
 
         if (currentIndex < 0 || currentIndex >= dialogueLines.Length)
         {
@@ -100,10 +99,13 @@ public class DialogueManager : MonoBehaviour
         }
 
         DialogueLine line = dialogueLines[currentIndex];
+
+        suppressSpaceThisFrame = true;
+        StartCoroutine(EnableSpaceNextFrame());
+
         StartCoroutine(TypeLine(line.npcLine));
         StartCoroutine(WaitThenShowChoices());
     }
-
 
     IEnumerator WaitThenShowChoices()
     {
@@ -114,9 +116,18 @@ public class DialogueManager : MonoBehaviour
     IEnumerator TypeLine(string line)
     {
         dialogueText.text = "";
-        foreach (char c in line)
+        finishedTyping = false;
+        skipRequested = false;
+
+        for (int i = 0; i < line.Length; i++)
         {
-            dialogueText.text += c;
+            if (skipRequested)
+            {
+                dialogueText.text = line;
+                break;
+            }
+
+            dialogueText.text += line[i];
 
             if (typingSound && Time.time - lastPlayTime > 0.08f)
             {
@@ -129,22 +140,20 @@ public class DialogueManager : MonoBehaviour
         }
 
         finishedTyping = true;
+        skipRequested = false;
     }
 
     void ShowChoices()
     {
         DialogueLine line = dialogueLines[currentIndex];
-
         ClearChoices();
 
-        // Case: no choices ¡ú show arrow
         if (line.choices == null || line.choices.Length == 0)
         {
             if (continueArrow) continueArrow.SetActive(true);
             return;
         }
 
-        // Case: there are choices ¡ú hide arrow and show choice buttons
         if (continueArrow) continueArrow.SetActive(false);
 
         foreach (var choice in line.choices)
@@ -154,7 +163,6 @@ public class DialogueManager : MonoBehaviour
             b.onClick.AddListener(() => OnChoiceSelected(choice));
         }
     }
-
 
     void OnChoiceSelected(DialogueChoice choice)
     {
@@ -167,12 +175,14 @@ public class DialogueManager : MonoBehaviour
     {
         dialogueText.text = "";
 
-        // If the choice has no NPC response, skip typing
         if (string.IsNullOrEmpty(choice.npcResponse))
         {
             GoToNext(choice.nextIndex);
             yield break;
         }
+
+        suppressSpaceThisFrame = true;
+        StartCoroutine(EnableSpaceNextFrame());
 
         yield return StartCoroutine(TypeLine(choice.npcResponse));
         yield return new WaitUntil(() => finishedTyping);
@@ -180,7 +190,6 @@ public class DialogueManager : MonoBehaviour
         if (continueArrow != null)
             continueArrow.SetActive(true);
 
-        // Wait for player to continue
         yield return new WaitUntil(() => Input.GetKeyDown(KeyCode.Space));
 
         if (continueArrow != null)
@@ -220,27 +229,32 @@ public class DialogueManager : MonoBehaviour
 
         ClearChoices();
 
-        // Wait for player to press Space to close
         yield return new WaitUntil(() => Input.GetKeyDown(KeyCode.Space));
 
         dialogueUI.SetActive(false);
         if (continueArrow != null)
             continueArrow.SetActive(false);
 
-        // Save dialogue state
         if (!string.IsNullOrEmpty(npcName))
-        {
             GameStateManager.Instance.SaveDecision(npcName, "CompletedMainDialogue");
-        }
 
-        // Re-enable player control
         if (playerController != null)
             playerController.enabled = true;
     }
 
     void Update()
     {
-        if (dialogueUI.activeSelf && finishedTyping && Input.GetKeyDown(KeyCode.Space))
+        if (!dialogueUI.activeSelf) return;
+
+        // Skip mid-typing
+        if (!finishedTyping && !suppressSpaceThisFrame && Input.GetKeyDown(KeyCode.Space))
+        {
+            skipRequested = true;
+            return;
+        }
+
+        // Continue after typing finished
+        if (finishedTyping && Input.GetKeyDown(KeyCode.Space))
         {
             DialogueLine line = dialogueLines[currentIndex];
             if (line.choices == null || line.choices.Length == 0)
@@ -256,5 +270,11 @@ public class DialogueManager : MonoBehaviour
                 }
             }
         }
+    }
+
+    IEnumerator EnableSpaceNextFrame()
+    {
+        yield return null;
+        suppressSpaceThisFrame = false;
     }
 }
