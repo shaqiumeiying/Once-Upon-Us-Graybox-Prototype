@@ -35,6 +35,10 @@ public class StoveInteraction : MonoBehaviour
             game.mortarBaked = true;
             Debug.Log("Baked leaves ready!");
             inv.AddItem("BakedLeaves", 1);
+            WorldDraggable drag = other.GetComponent<WorldDraggable>();
+            if (drag != null)
+                drag.ReturnToStart(1f);
+
         }
 
         // 🫖 Teapot on stove
