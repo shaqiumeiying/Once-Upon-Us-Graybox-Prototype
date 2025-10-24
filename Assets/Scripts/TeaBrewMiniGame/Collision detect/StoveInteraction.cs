@@ -36,6 +36,9 @@ public class StoveInteraction : MonoBehaviour
             Debug.Log("Teapot placed on stove — boiling water...");
             game.teapotBoiled = true;
             Debug.Log("Tea boiled!");
+            WorldDraggable drag = other.GetComponent<WorldDraggable>();
+            if (drag != null)
+                drag.ReturnToStart(1f);
         }
     }
 

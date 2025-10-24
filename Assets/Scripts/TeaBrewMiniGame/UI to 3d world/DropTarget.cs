@@ -26,9 +26,9 @@ public class DropTarget : MonoBehaviour
                 if (acceptsItem && itemName == "TeaLeaves")
                 {
                     Debug.Log("Tea leaves added to mortar.");
+                    game.mortarHasLeaves = true;
                     // Trigger stirring minigame 
                     stirringMinigameObject.SetActive(true);
-                    game.mortarHasLeaves = true;
                     inv.UseItem(itemName, 1);
                 }
                 break;

@@ -40,6 +40,7 @@ public class StoveMinigameManager : MonoBehaviour
 
     void Start()
     {
+   
         // Get or add AudioSource component (only needs to happen once)
         audioSource = GetComponent<AudioSource>();
         if (audioSource == null)
@@ -308,7 +309,7 @@ public class StoveMinigameManager : MonoBehaviour
                 // Display final result
                 if (allCorrect)
                 {
-                    Debug.Log("Perfectly roasted!");
+                    Debug.Log("Perfectly Grinded!");
                 }
                 else
                 {
@@ -316,6 +317,7 @@ public class StoveMinigameManager : MonoBehaviour
                 }
 
                 StartCoroutine(DisableMinigameAfterDelay(1f));
+              
             }
         }
     }
@@ -371,6 +373,10 @@ public class StoveMinigameManager : MonoBehaviour
     IEnumerator DisableMinigameAfterDelay(float delay)
     {
         yield return new WaitForSeconds(delay);
+
+        TeaBrewManager.Instance.mortarGrinded = true;
+
         gameObject.SetActive(false);
+
     }
 }
