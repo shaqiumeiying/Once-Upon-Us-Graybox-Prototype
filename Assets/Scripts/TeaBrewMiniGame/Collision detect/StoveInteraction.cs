@@ -5,21 +5,11 @@ public class StoveInteraction : MonoBehaviour
     private TeaBrewManager game;
     private InventoryManagerTBM inv;
 
-    [Header("Minigame Reference")]
-    public GameObject stirringMinigame; // Reference to the minigame object
-
-
     private void Start()
     {
         game = TeaBrewManager.Instance;
         inv = FindObjectOfType<InventoryManagerTBM>();
         // Debug.Log($"[DEBUG] Found inventory: {inv != null}");
-
-        // Make sure minigame is disabled at start
-        if (stirringMinigame != null)
-        {
-            stirringMinigame.SetActive(false);
-        }
     }
 
     private void OnTriggerEnter(Collider other)
@@ -30,7 +20,6 @@ public class StoveInteraction : MonoBehaviour
         if (other.CompareTag("Mortar") && game.mortarHasLeaves)
         {
             Debug.Log("Mortar placed on stove — baking in progress...");
-            stirringMinigame.SetActive(true);
             game.mortarHasLeaves = false;
             game.mortarBaked = true;
             Debug.Log("Baked leaves ready!");
@@ -47,6 +36,9 @@ public class StoveInteraction : MonoBehaviour
             Debug.Log("Teapot placed on stove — boiling water...");
             game.teapotBoiled = true;
             Debug.Log("Tea boiled!");
+            WorldDraggable drag = other.GetComponent<WorldDraggable>();
+            if (drag != null)
+                drag.ReturnToStart(1f);
         }
     }
 

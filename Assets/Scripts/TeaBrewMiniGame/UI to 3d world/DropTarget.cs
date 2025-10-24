@@ -8,6 +8,9 @@ public class DropTarget : MonoBehaviour
     [Header("Object Type")]
     public string objectType;        // e.g. Mortar, Teapot, Stove, Cup
 
+    [Header("Minigame References")]
+    public GameObject stirringMinigameObject;
+
     public void OnItemDropped(string itemName)
     {
         var game = TeaBrewManager.Instance;
@@ -24,6 +27,8 @@ public class DropTarget : MonoBehaviour
                 {
                     Debug.Log("Tea leaves added to mortar.");
                     game.mortarHasLeaves = true;
+                    // Trigger stirring minigame 
+                    stirringMinigameObject.SetActive(true);
                     inv.UseItem(itemName, 1);
                 }
                 break;
@@ -35,7 +40,6 @@ public class DropTarget : MonoBehaviour
                 {
                     Debug.Log("Mortar placed on stove ¡ª baking in progress...");
                     game.mortarHasLeaves = false;
-                    // TODO: trigger QTE minigame
                     inv.AddItem("BakedLeaves", 1);
                     Debug.Log("Baked Leaves added to inventory!");
                 }
@@ -43,7 +47,6 @@ public class DropTarget : MonoBehaviour
                 else if (game.teapotHasWater && game.teapotHasLeaves)
                 {
                     Debug.Log("Teapot placed on stove ¡ª boiling water...");
-                    // TODO: trigger minigame
                     game.teapotBoiled = true;
                     Debug.Log("Water boiled!");
                 }
@@ -72,7 +75,6 @@ public class DropTarget : MonoBehaviour
             case "Cup":
                 if (game.teapotBoiled)
                 {
-                    // TODO: trigger final minigame
                     Debug.Log("Tea poured into cup! Tea brewed successfully.");
                     game.cupHasTea = true;
                     

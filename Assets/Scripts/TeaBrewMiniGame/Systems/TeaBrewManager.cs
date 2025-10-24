@@ -20,6 +20,7 @@ public class TeaBrewManager : MonoBehaviour
     // === Global State Flags ===
     [Header("Mortar")]
     public bool mortarHasLeaves = false;   // dragged from ui: add tea to mortar
+    public bool mortarGrinded = false;      // from grind minigame: grinding done
     public bool mortarBaked = false;       // from stove trigger: bakeing done
 
     [Header("Teapot")]
@@ -46,7 +47,7 @@ public class TeaBrewManager : MonoBehaviour
     // === Example helpers for logic checks ===
     public bool CanBake()
     {
-        return mortarHasLeaves && !mortarBaked;
+        return mortarGrinded && !mortarBaked;
     }
 
     public bool CanBoil()
@@ -57,6 +58,7 @@ public class TeaBrewManager : MonoBehaviour
     public void ResetProcess()
     {
         mortarHasLeaves = false;
+        mortarGrinded = false;
         mortarBaked = false;
         teapotHasWater = false;
         teapotHasLeaves = false;
