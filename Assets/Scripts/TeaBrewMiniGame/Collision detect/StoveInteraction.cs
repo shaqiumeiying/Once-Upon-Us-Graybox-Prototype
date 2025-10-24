@@ -45,7 +45,6 @@ public class StoveInteraction : MonoBehaviour
         if (other.CompareTag("Teapot") && game.teapotHasWater && game.teapotHasLeaves)
         {
             Debug.Log("Teapot placed on stove — boiling water...");
-            stirringMinigame.SetActive(true);
             game.teapotBoiled = true;
             Debug.Log("Tea boiled!");
         }
