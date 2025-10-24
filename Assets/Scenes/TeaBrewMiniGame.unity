@@ -1212,6 +1212,8 @@ MonoBehaviour:
   - Water
   - BakedTeaLeaves
   objectType: Teapot
+  stirringMinigameObject: {fileID: 0}
+  pouringMinigameObject: {fileID: 0}
 --- !u!65 &403344236
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -3153,6 +3155,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   acceptedItems: []
   objectType: Stove
+  stirringMinigameObject: {fileID: 0}
+  pouringMinigameObject: {fileID: 0}
 --- !u!64 &1101901261
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -3237,7 +3241,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 481461964304c1a478d6b26653df0648, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  stirringMinigame: {fileID: 1315644543}
 --- !u!1 &1113905982
 GameObject:
   m_ObjectHideFlags: 0
@@ -3557,7 +3560,7 @@ GameObject:
   - component: {fileID: 1315644544}
   - component: {fileID: 1315644545}
   m_Layer: 0
-  m_Name: StoveMinigame
+  m_Name: StirringMinigame
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4220,6 +4223,8 @@ MonoBehaviour:
   acceptedItems:
   - TeaLeaves
   objectType: Mortar
+  stirringMinigameObject: {fileID: 1315644543}
+  pouringMinigameObject: {fileID: 0}
 --- !u!65 &1641545384
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -4577,6 +4582,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   acceptedItems: []
   objectType: Cup
+  stirringMinigameObject: {fileID: 1315644543}
+  pouringMinigameObject: {fileID: 0}
 --- !u!65 &1708650570
 BoxCollider:
   m_ObjectHideFlags: 0
