@@ -2044,6 +2044,7 @@ MonoBehaviour:
   playerTag: Player
   requireKeyPress: 0
   triggerKey: 32
+  enableOutline: 1
 --- !u!1 &186201323
 GameObject:
   m_ObjectHideFlags: 0
@@ -2816,6 +2817,7 @@ MonoBehaviour:
   playerTag: Player
   requireKeyPress: 0
   triggerKey: 32
+  enableOutline: 1
 --- !u!136 &314501602
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -12189,6 +12191,7 @@ MonoBehaviour:
   playerTag: Player
   requireKeyPress: 0
   triggerKey: 32
+  enableOutline: 1
 --- !u!4 &692567290 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 7145027585950651175, guid: 91a4be5c94020ae4b84281fed4c52716, type: 3}
@@ -14544,6 +14547,7 @@ GameObject:
   - component: {fileID: 963194227}
   - component: {fileID: 963194226}
   - component: {fileID: 963194229}
+  - component: {fileID: 963194230}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -14639,6 +14643,39 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   target: {fileID: 968540909}
   offset: {x: 0, y: 8, z: -8}
+--- !u!114 &963194230
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 963194225}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a78da3f00f3328541b4526c0b0b5ec5c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  lineThickness: 1.75
+  lineIntensity: 1
+  fillAmount: 0.2
+  lineColor0: {r: 1, g: 0, b: 0, a: 1}
+  lineColor1: {r: 0, g: 1, b: 0, a: 1}
+  lineColor2: {r: 1, g: 0.3226415, b: 0.432187, a: 1}
+  additiveRendering: 0
+  backfaceCulling: 1
+  fillColor: {r: 0.8037735, g: 0.12587391, b: 0.12587391, a: 1}
+  useFillColor: 0
+  cornerOutlines: 0
+  addLinesBetweenColors: 1
+  scaleWithScreenSize: 1
+  alphaCutoff: 0.5
+  flipY: 0
+  sourceCamera: {fileID: 963194227}
+  autoEnableOutlines: 0
+  outlineCamera: {fileID: 0}
+  outlineShaderMaterial: {fileID: 0}
+  renderTexture: {fileID: 0}
+  extraRenderTexture: {fileID: 0}
 --- !u!4 &965388817 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2007219750784066963, guid: 62521ed36ae40084a831c3ffa87140b3, type: 3}
@@ -14789,7 +14826,7 @@ Transform:
   m_GameObject: {fileID: 968540903}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -54.4, y: 0.9, z: -4.99}
+  m_LocalPosition: {x: -2.51, y: 0.9, z: 7.44}
   m_LocalScale: {x: 0.85, y: 0.85, z: 0.85}
   m_ConstrainProportionsScale: 1
   m_Children: []
@@ -16193,6 +16230,7 @@ GameObject:
   - component: {fileID: 1133791315}
   - component: {fileID: 1133791319}
   - component: {fileID: 1133791314}
+  - component: {fileID: 1133791320}
   m_Layer: 0
   m_Name: Tea Leaves
   m_TagString: Collectible
@@ -16209,8 +16247,8 @@ Transform:
   m_GameObject: {fileID: 1133791312}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -980.26, y: -539.75, z: 18.2}
-  m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
+  m_LocalPosition: {x: -979.72, y: -539.39, z: 17.93}
+  m_LocalScale: {x: 1.29, y: 1.29, z: 1.29}
   m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 1889338659}
@@ -16249,7 +16287,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c039c6893f2563b44b8a105bb97ffee7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  icon: {fileID: 21300000, guid: b8636e078a7da8941bf1cc2c8f3702bc, type: 3}
+  icon: {fileID: 21300000, guid: 7fc60785990aa664fa8e25778b712b1a, type: 3}
   itemName: Tea Leaves
 --- !u!65 &1133791316
 BoxCollider:
@@ -16270,7 +16308,7 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 3, y: 3, z: 3}
+  m_Size: {x: 2.64, y: 2.56, z: 3}
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!23 &1133791317
 MeshRenderer:
@@ -16292,7 +16330,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: cefec0f1a630a404793db2cacf75d018, type: 2}
+  - {fileID: 2100000, guid: 7b621d5c82078e74c9b7fec40cf38517, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -16321,7 +16359,7 @@ MeshFilter:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1133791312}
-  m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+  m_Mesh: {fileID: 10210, guid: 0000000000000000e000000000000000, type: 0}
 --- !u!114 &1133791319
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -16338,6 +16376,21 @@ MonoBehaviour:
   playerTag: Player
   requireKeyPress: 0
   triggerKey: 32
+  enableOutline: 1
+--- !u!114 &1133791320
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1133791312}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fbf3575480402db40813e763382412fb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  color: 2
+  eraseRenderer: 0
 --- !u!1 &1135912838
 GameObject:
   m_ObjectHideFlags: 0
@@ -16949,7 +17002,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5950678364767943339, guid: ccdc3bc58855c2c44882a778a588f4f2, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -19.707338
+      value: -20.25
       objectReference: {fileID: 0}
     - target: {fileID: 5950678364767943339, guid: ccdc3bc58855c2c44882a778a588f4f2, type: 3}
       propertyPath: m_LocalPosition.y
@@ -16957,7 +17010,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5950678364767943339, guid: ccdc3bc58855c2c44882a778a588f4f2, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 18.672955
+      value: 21.18
       objectReference: {fileID: 0}
     - target: {fileID: 5950678364767943339, guid: ccdc3bc58855c2c44882a778a588f4f2, type: 3}
       propertyPath: m_LocalRotation.w
@@ -36668,6 +36721,7 @@ GameObject:
   - component: {fileID: 1627757923}
   - component: {fileID: 1627757927}
   - component: {fileID: 1627757922}
+  - component: {fileID: 1627757928}
   m_Layer: 0
   m_Name: Water
   m_TagString: Collectible
@@ -36813,6 +36867,21 @@ MonoBehaviour:
   playerTag: Player
   requireKeyPress: 0
   triggerKey: 32
+  enableOutline: 1
+--- !u!114 &1627757928
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1627757920}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fbf3575480402db40813e763382412fb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  color: 2
+  eraseRenderer: 0
 --- !u!4 &1628818759 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8590144229692821386, guid: 64e1a59ff23ed984aba219bf215cb33b, type: 3}
@@ -37750,6 +37819,7 @@ GameObject:
   - component: {fileID: 1705370474}
   - component: {fileID: 1705370476}
   - component: {fileID: 1705370475}
+  - component: {fileID: 1705370477}
   m_Layer: 0
   m_Name: Sugar
   m_TagString: Collectible
@@ -37895,6 +37965,21 @@ MonoBehaviour:
   playerTag: Player
   requireKeyPress: 0
   triggerKey: 32
+  enableOutline: 1
+--- !u!114 &1705370477
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1705370469}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fbf3575480402db40813e763382412fb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  color: 2
+  eraseRenderer: 0
 --- !u!1 &1713136367
 GameObject:
   m_ObjectHideFlags: 0
