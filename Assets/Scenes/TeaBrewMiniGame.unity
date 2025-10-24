@@ -1374,7 +1374,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 2, y: 3, z: 0}
-  m_LocalScale: {x: 2, y: 1, z: 1}
+  m_LocalScale: {x: 3.5, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 2146015243}
@@ -5983,7 +5983,7 @@ MonoBehaviour:
   timingBar: {fileID: 1684821491}
   marker: {fileID: 854281105}
   targetArea: {fileID: 416812225}
-  movementSpeed: 20
+  movementSpeed: 10
   pauseDuration: 2
 --- !u!114 &2146015245
 MonoBehaviour:
@@ -6002,6 +6002,8 @@ MonoBehaviour:
   pouringManager: {fileID: 2146015244}
   perfectMessage: Perfect pour!
   failMessage: Careful! That's too much!
+  badPour: {fileID: 8300000, guid: c29117b39fe18044aa8f6962a53f1318, type: 3}
+  goodPour: {fileID: 8300000, guid: f2c0881c2f19a9f4e862016939fc08be, type: 3}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

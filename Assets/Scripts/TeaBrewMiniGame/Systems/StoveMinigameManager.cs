@@ -40,7 +40,7 @@ public class StoveMinigameManager : MonoBehaviour
 
     void Start()
     {
-        // Get or add AudioSource component (only needs to happen once)
+        // Get or add AudioSource component
         audioSource = GetComponent<AudioSource>();
         if (audioSource == null)
         {

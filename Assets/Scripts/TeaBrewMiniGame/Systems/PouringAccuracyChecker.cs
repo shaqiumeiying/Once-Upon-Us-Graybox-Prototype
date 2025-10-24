@@ -19,6 +19,22 @@ public class PouringAccuracyChecker : MonoBehaviour
     [SerializeField] private string perfectMessage = "Perfect pour!";
     [SerializeField] private string failMessage = "Careful! That's too much!";
 
+    // === Sound Effects ===
+    [Header("Sound Effects")]
+    public AudioClip badPour;
+    public AudioClip goodPour;
+    private AudioSource audioSource;
+
+    void Start()
+    {
+        // Get or add AudioSource component
+        audioSource = GetComponent<AudioSource>();
+        if (audioSource == null)
+        {
+            audioSource = gameObject.AddComponent<AudioSource>();
+        }
+    }
+
     void Update()
     {
         CheckForPourAttempt();
@@ -80,8 +96,9 @@ public class PouringAccuracyChecker : MonoBehaviour
     private void OnPerfectPour()
     {
         // TODO: Add success feedback (particles, sounds, score increase, etc.)
-        // Example: AudioManager.Instance.PlaySound("PerfectPour");
         // Example: ParticleManager.Instance.PlayEffect("Success", marker.position);
+        audioSource.PlayOneShot(goodPour);
+
     }
 
     /// <summary>
@@ -91,7 +108,7 @@ public class PouringAccuracyChecker : MonoBehaviour
     private void OnFailedPour()
     {
         // TODO: Add failure feedback (sounds, effects, etc.)
-        // Example: AudioManager.Instance.PlaySound("FailedPour");
+        audioSource.PlayOneShot(badPour);
     }
 
     /// <summary>
