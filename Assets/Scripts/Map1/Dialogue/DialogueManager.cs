@@ -45,6 +45,7 @@ public class DialogueManager : MonoBehaviour
 
         typingSource = gameObject.AddComponent<AudioSource>();
         typingSource.playOnAwake = false;
+        typingSource.volume = 0.15f;
         typingSource.spatialBlend = 0f;
 
         playerController = FindObjectOfType<PlayerMovement>();

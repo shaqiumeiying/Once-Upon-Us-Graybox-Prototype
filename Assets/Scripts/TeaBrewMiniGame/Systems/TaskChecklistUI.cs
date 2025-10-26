@@ -15,6 +15,11 @@ public class TaskChecklistUI : MonoBehaviour
     [Header("End UI")]
     public GameObject congratsUI;
 
+    [Header("Sound effect")]
+    public AudioClip CompleteSound;
+    private AudioSource audioSource;
+
+
     private TeaBrewManager game;
 
     // --- Permanent completion flags ---
@@ -34,6 +39,11 @@ public class TaskChecklistUI : MonoBehaviour
         HideAll();
         if (congratsUI != null)
             congratsUI.SetActive(false);
+        audioSource = GetComponent<AudioSource>();
+        if (audioSource == null)
+        {
+            audioSource = gameObject.AddComponent<AudioSource>();
+        }
     }
 
     void Update()
@@ -76,6 +86,7 @@ public class TaskChecklistUI : MonoBehaviour
         if (congratsUI != null)
         {
             congratsUI.SetActive(true);
+            audioSource.PlayOneShot(CompleteSound);
             Debug.Log("Congrats! Tea brewed successfully!");
         }
     }
