@@ -5,10 +5,16 @@ EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Scenes:
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/Map1.unity
     guid: 9fc0d4010bbf28b4594072e72b8655ab
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/TeaBrewMiniGame.unity
     guid: c32ade9b02da2274fa61f8d0d539c099
+  - enabled: 1
+    path: Assets/Scenes/EnemySwarm.unity
+    guid: 074db6f1bc2b11d4cad9e398eabeb5dc
+  - enabled: 1
+    path: Assets/Scenes/Boss.unity
+    guid: 42e58712b2db47543a061811f2db0f9c
   m_configObjects: {}

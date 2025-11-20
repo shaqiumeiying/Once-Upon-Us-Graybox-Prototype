@@ -14,7 +14,7 @@ public class PortalToMinigame : MonoBehaviour
 
     void Update()
     {
-        if (indicator != null && indicator.IsPlayerInRange() && Input.GetKeyDown(KeyCode.Space))
+        if (indicator != null && indicator.IsPlayerInRange() && (Input.GetKeyDown(KeyCode.JoystickButton0) || Input.GetMouseButtonDown(0)))
         {
             SceneManager.LoadScene(sceneToLoad);
         }

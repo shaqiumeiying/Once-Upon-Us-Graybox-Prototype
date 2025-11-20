@@ -12,11 +12,6 @@ public class PlayerMovement : MonoBehaviour
     public float jumpForce = 6f;
     public float gravityMultiplier = 2f;
 
-    //[Header("Ground Check")]
-    //public Transform groundCheck;
-    //public float groundRadius = 0.25f;
-    //public LayerMask groundLayer;
-
     [Header("Dash Settings")]
     public float dashSpeed = 15f;
     public float dashDuration = 0.15f;
@@ -30,25 +25,25 @@ public class PlayerMovement : MonoBehaviour
 
     private Rigidbody rb;
     private Vector2 moveInput;
-    private bool jumpPressed;
     private bool isGrounded;
+
+    private Animator anim;               // << ADD
+    private SpriteRenderer sr;           // << ADD
 
     void Awake()
     {
         rb = GetComponent<Rigidbody>();
         rb.freezeRotation = true;
+
+        anim = GetComponentInChildren<Animator>();   // << ADD
+        sr = GetComponentInChildren<SpriteRenderer>(); // << ADD
     }
 
     private void Start()
     {
-        if (dashSound != null)
-        {
-            audioSource = GetComponent<AudioSource>();
-            if (audioSource == null)
-            {
-                audioSource = gameObject.AddComponent<AudioSource>();
-            }
-        }
+        audioSource = GetComponent<AudioSource>();
+        if (!audioSource)
+            audioSource = gameObject.AddComponent<AudioSource>();
     }
 
     void Update()
@@ -56,16 +51,12 @@ public class PlayerMovement : MonoBehaviour
         moveInput.x = Input.GetAxis("Horizontal");
         moveInput.y = Input.GetAxis("Vertical");
 
-        //if (Input.GetButtonDown("Jump"))
-        //    jumpPressed = true;
-
-        //if (groundCheck != null)
-        //    isGrounded = Physics.CheckSphere(groundCheck.position, groundRadius, groundLayer);
+        UpdateAnimation();   // << ADD
 
         // ------ DASH INPUT ------
         if (!isDashing && !dashOnCooldown)
         {
-            if (Input.GetKeyDown(KeyCode.JoystickButton0) || Input.GetMouseButtonDown(1)) // A button or Right Mouse
+            if (Input.GetKeyDown(KeyCode.JoystickButton0) || Input.GetMouseButtonDown(0))
             {
                 StartCoroutine(Dash());
             }
@@ -85,40 +76,29 @@ public class PlayerMovement : MonoBehaviour
                                     * acceleration * Time.fixedDeltaTime;
             rb.AddForce(velocityChange, ForceMode.VelocityChange);
 
-            //// --- Jump ---
-            //if (jumpPressed && isGrounded)
-            //{
-            //    rb.velocity = new Vector3(rb.velocity.x, 0f, rb.velocity.z);
-            //    rb.AddForce(Vector3.up * jumpForce, ForceMode.VelocityChange);
-            //}
-            //jumpPressed = false;
-
             // --- Extra gravity ---
             if (!isGrounded)
                 rb.AddForce(Physics.gravity * (gravityMultiplier - 1f), ForceMode.Acceleration);
         }
     }
-    //  DASH LOGIC
+
+    // ---------------------------------------------------
+    //  DASH
+    // ---------------------------------------------------
     IEnumerator Dash()
     {
         isDashing = true;
         dashOnCooldown = true;
 
-        // Play dash sound
-        if (dashSound != null && audioSource != null)
-        {
+        if (dashSound != null)
             audioSource.PlayOneShot(dashSound);
-        }
 
-        // Determine dash direction
         Vector3 dashDir = new Vector3(moveInput.x, 0, moveInput.y);
-
         if (dashDir.magnitude < 0.1f)
             dashDir = transform.forward;  // dash forward if no input
 
         dashDir.Normalize();
 
-        // Disable gravity
         rb.useGravity = false;
 
         float timer = 0f;
@@ -129,12 +109,31 @@ public class PlayerMovement : MonoBehaviour
             yield return null;
         }
 
-        // Re-enable gravity + stop dash
         rb.useGravity = true;
         isDashing = false;
 
-        // Small delay before next dash allowed
         yield return new WaitForSeconds(dashCooldown);
         dashOnCooldown = false;
+    }
+
+    // ---------------------------------------------------
+    //  ANIMATION UPDATE
+    // ---------------------------------------------------
+    void UpdateAnimation()
+    {
+        if (anim == null) return;
+
+        float speed = new Vector2(rb.velocity.x, rb.velocity.z).magnitude;
+
+        anim.SetFloat("Speed", speed);   // walk/idle blend
+
+        // Flip character horizontally (if needed)
+        if (speed > 0.1f)
+        {
+            if (moveInput.x > 0.1f)
+                sr.flipX = false;
+            else if (moveInput.x < -0.1f)
+                sr.flipX = true;
+        }
     }
 }
